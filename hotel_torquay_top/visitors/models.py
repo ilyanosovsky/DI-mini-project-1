@@ -1,5 +1,5 @@
 from django.db import models
-import datetime
+from datetime import date, timedelta
 from django.contrib.auth.models import User
 
 # Create your models here.
@@ -16,19 +16,21 @@ class Guest(models.Model):
         return self.first_name + ' ' + self.last_name
     
 class Room(models.Model):
+    room_number = models.CharField(max_length=10)
     room_img = models.URLField(default = '')
     room_type = models.ForeignKey('RoomType', on_delete=models.CASCADE)
     room_size = models.ForeignKey('RoomSize', on_delete=models.CASCADE)
     is_available = models.BooleanField(default=True)
 
+
     def __str__(self):
-        return self.room_number
+        return f'{self.room_type} {self.room_size}'
     
 class Booking(models.Model):
-    guest = models.ForeignKey(Guest, on_delete=models.CASCADE)
+    guest = models.ForeignKey(User, on_delete=models.CASCADE)
     room = models.ForeignKey(Room, on_delete=models.CASCADE)
-    check_in = models.DateField(default=datetime.date.today)
-    check_out = models.DateField()
+    check_in = models.DateField(default=date.today)
+    check_out = models.DateField(default=(date.today() + timedelta(days=1)))
     is_cancelled = models.BooleanField(default=False)
 
     def __str__(self):
@@ -36,13 +38,14 @@ class Booking(models.Model):
     
 class RoomType(models.Model):
     room_type = models.CharField(max_length=20)
+    room_description = models.TextField()
 
     def __str__(self):
         return self.room_type
     
     
 class RoomSize(models.Model):
-    room_size = models.CharField(max_length=20)
+    room_size = models.CharField(max_length=10)
 
     def __str__(self):
         return self.room_size
