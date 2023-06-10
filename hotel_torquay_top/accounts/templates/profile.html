@@ -5,5 +5,27 @@
 <h3>Welcome, {{user.first_name}} {{user.last_name}}</h3>
 <p>Your username is {{ user.username }}</p>
 <p>Thank you for visiting and we're glad to see you again!</p>
-
+<h3>You can check your Booking details here:</h3>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Room</th>
+            <th>Check In</th>
+            <th>Check Out</th>
+            <th>Guests</th>
+            <th>Price</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for booking in bookings %}
+        <tr>
+            <td>{{booking.room}}</td>
+            <td>{{booking.check_in}}</td>
+            <td>{{booking.check_out}}</td>
+            <td>{{booking.guest.first_name}} {{booking.guest.last_name}}</td>
+            <td>{{booking.total_price}}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
 {% endblock content %}

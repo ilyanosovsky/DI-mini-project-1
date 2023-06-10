@@ -1,4 +1,8 @@
+from typing import Any, Dict, Mapping, Optional, Type, Union
 from django import forms
+from django.core.files.base import File
+from django.db.models.base import Model
+from django.forms.utils import ErrorList
 from .models import Guest, Room, Booking, RoomType, RoomSize, RoomRate, UserRequest
 from django.utils import timezone
 
@@ -20,6 +24,10 @@ class BookingForm(forms.ModelForm):
             'check_in' : forms.DateInput(attrs={'type' : 'date'}),
             'check_out' : forms.DateInput(attrs={'type' : 'date'})
         }
+    
+    # def __init__(self, *args, **kwargs):
+    #     super().__init__(*args, **kwargs)
+    #     self.fields['room'].queryset = Room.objects.filter(is_available=True)
 
     def clean(self):
         cleaned_data = super().clean()
@@ -31,12 +39,10 @@ class BookingForm(forms.ModelForm):
                 raise forms.ValidationError('Check-In can only be in the future')
             if check_out == today:
                 raise forms.ValidationError('Check-Out cant be on the same date')
-            # overlap_booking = Booking.objects.filter(
-            #     check_in__lt=check_out,
-            #     check_out__gt=check_in).exclude(pk=self.instance.pk)
-            if Booking.objects.filter(
+            overlap_booking = Booking.objects.filter(
                 check_in__lt=check_out,
-                check_out__gt=check_in).exists():
+                check_out__gt=check_in).exclude(pk=self.instance.pk)
+            if overlap_booking.exists():
                 raise forms.ValidationError('Room is unavailable for chosen dates. Please choose another room type...')
             
         return cleaned_data
