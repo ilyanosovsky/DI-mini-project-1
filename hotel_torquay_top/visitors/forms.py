@@ -60,3 +60,5 @@ class UserRequestForm(forms.ModelForm):
         model = UserRequest
         fields = '__all__'
         exclude = ('user', )
+
+GuestFormSet = forms.modelformset_factory(Guest, form=GuestForm, extra=1)
