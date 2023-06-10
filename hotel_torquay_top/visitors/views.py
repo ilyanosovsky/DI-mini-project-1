@@ -8,6 +8,7 @@ from .forms import RoomForm, RoomTypeForm, RoomSizeForm, RoomRateForm, GuestForm
 from django.contrib.auth.models import User
 from accounts.models import UserProfile
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import HttpResponse
 
 # Create your views here.
 
@@ -72,7 +73,9 @@ class BookingCreateView(CreateView):
         context = super(BookingCreateView, self).get_context_data(**kwargs)
         context['all_bookings'] = Booking.objects.all()
         return context 
-
+    
+    def confirm_booking(request):
+        return HttpResponse("Booking has been made successfully")
 
 class InfoRequestView(CreateView):
     model = UserProfile

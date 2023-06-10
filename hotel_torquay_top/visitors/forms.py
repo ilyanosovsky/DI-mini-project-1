@@ -39,12 +39,10 @@ class BookingForm(forms.ModelForm):
                 raise forms.ValidationError('Check-In can only be in the future')
             if check_out == today:
                 raise forms.ValidationError('Check-Out cant be on the same date')
-            # overlap_booking = Booking.objects.filter(
-            #     check_in__lt=check_out,
-            #     check_out__gt=check_in).exclude(pk=self.instance.pk)
-            if Booking.objects.filter(
+            overlap_booking = Booking.objects.filter(
                 check_in__lt=check_out,
-                check_out__gt=check_in).exists():
+                check_out__gt=check_in).exclude(pk=self.instance.pk)
+            if overlap_booking.exists():
                 raise forms.ValidationError('Room is unavailable for chosen dates. Please choose another room type...')
             
         return cleaned_data
