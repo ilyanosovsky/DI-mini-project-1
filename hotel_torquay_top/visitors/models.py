@@ -33,21 +33,21 @@ class Booking(models.Model):
     is_cancelled = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.guest.first_name + ' ' + self.guest.last_name + ' ' + self.room.room_number
+        return self.guest.room + 'for' + self.guest.first_name + ' ' + self.guest.last_name + ' '
     
 class RoomType(models.Model):
-    name = models.CharField(max_length=20)
+    type = models.CharField(max_length=20)
     room_description = models.TextField()
 
     def __str__(self):
-        return self.room_type
+        return self.type
     
     
 class RoomSize(models.Model):
     size = models.CharField(max_length=10)
 
     def __str__(self):
-        return self.room_size
+        return self.size
     
 class RoomRate(models.Model):
     room_rate = models.DecimalField(max_digits=10, decimal_places=2)

@@ -77,7 +77,7 @@ WSGI_APPLICATION = "hotel_torquay.wsgi.application"
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'hotelprojectdb',
+        'NAME': 'hotelproject',
         'USER': 'ivankozin',
         'PASSWORD': '2158310',
         'HOST': 'localhost',
